@@ -5,11 +5,11 @@ on:
     branches: 
       - master
   schedule:
-    - cron: '*/16 * * * *'
+    - cron: '* */12 * * *'
 
 env:
   UPDATE_IPV4: true
-  UPDATE_IPV6: false
+  UPDATE_IPV6: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,3 +38,14 @@ jobs:
           SECRETID: ${{ secrets.SECRETID }}
           SECRETKEY: ${{ secrets.SECRETKEY }}
         run: python cf2dns_actions.py AAAA
+
+  keepalive-workflow:
+    name: Keepalive Workflow
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gautamkrishnar/keepalive-workflow@v1
+        with:
+          use_api: true
